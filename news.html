@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISL - News</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <img src="images/MISL.png" alt="MISL Logo" class="logo-img" />
+                    <span>MISL</span>
+                </a>
+            </div>
+            <button class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="live-scores.html">Scores</a></li>
+                <li><a href="standings.html">Standings</a></li>
+                <li><a href="stats.html">Stats</a></li>
+                <li><a href="downloads.html">Downloads</a></li>
+                <li><a href="news.html" class="active">News</a></li>
+                <li><a href="teams.html">Teams</a></li>
+                <li><a href="fixtures.html">Fixtures</a></li>
+            </ul>
+            <button class="btn-live">
+                <span class="pulse"></span>
+                Live Games
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="news-page">
+        <div class="container">
+            <!-- News Header -->
+            <div class="page-header">
+                <h1>Latest News</h1>
+                <div class="news-filters">
+                    <button class="filter-btn active" data-filter="all">All News</button>
+                    <button class="filter-btn" data-filter="league">League Updates</button>
+                    <button class="filter-btn" data-filter="teams">Team News</button>
+                    <button class="filter-btn" data-filter="players">Player Spotlight</button>
+                </div>
+            </div>
+
+            <!-- Featured News -->
+            <section class="featured-news">
+                <div class="featured-article">
+                    <div class="article-image">
+                        <img src="images/news/featured.jpg" alt="Championship Game">
+                        <div class="article-category">League Updates</div>
+                    </div>
+                    <div class="article-content">
+                        <h2>Thunderbolts Clinch Division Title in Thrilling Finale</h2>
+                        <p class="article-meta">
+                            <span><i class="far fa-clock"></i> March 8, 2025</span>
+                            <span><i class="far fa-user"></i> John Anderson</span>
+                        </p>
+                        <p class="article-excerpt">In a nail-biting finish to the regular season, the Thunderbolts secured their division title with a dramatic 7-6 victory over the Dragons...</p>
+                        <a href="#" class="read-more">Read Full Story <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- News Grid -->
+            <section class="news-grid">
+                <!-- Article 1 -->
+                <article class="news-card">
+                    <div class="card-image">
+                        <img src="images/news/news1.jpg" alt="Player Interview">
+                        <div class="article-category">Player Spotlight</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Mike Johnson Named Player of the Month</h3>
+                        <p class="article-meta">
+                            <span><i class="far fa-clock"></i> March 7, 2025</span>
+                        </p>
+                        <p>Cyclones' star player Mike Johnson receives the prestigious award after an outstanding performance...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="news-card">
+                    <div class="card-image">
+                        <img src="images/news/news2.jpg" alt="Team Practice">
+                        <div class="article-category">Team News</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Dragons Announce New Training Facility</h3>
+                        <p class="article-meta">
+                            <span><i class="far fa-clock"></i> March 6, 2025</span>
+                        </p>
+                        <p>State-of-the-art facility set to open next month, featuring advanced training equipment...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="news-card">
+                    <div class="card-image">
+                        <img src="images/news/news3.jpg" alt="League Meeting">
+                        <div class="article-category">League Updates</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>MISL Announces Expansion Plans for 2026</h3>
+                        <p class="article-meta">
+                            <span><i class="far fa-clock"></i> March 5, 2025</span>
+                        </p>
+                        <p>League officials reveal plans to add two new teams in the upcoming season...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="news-card">
+                    <div class="card-image">
+                        <img src="images/news/news4.jpg" alt="Community Event">
+                        <div class="article-category">Community</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>MISL Teams Unite for Youth Development Program</h3>
+                        <p class="article-meta">
+                            <span><i class="far fa-clock"></i> March 4, 2025</span>
+                        </p>
+                        <p>Local youth softball programs receive support through new initiative...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Load More -->
+            <div class="load-more">
+                <button class="btn-load-more">
+                    <i class="fas fa-sync-alt"></i> Load More News
+                </button>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <section class="newsletter-section">
+                <div class="newsletter-content">
+                    <h2><i class="far fa-envelope"></i> Stay Updated</h2>
+                    <p>Subscribe to our newsletter for the latest MISL news and updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email address" required>
+                        <button type="submit">Subscribe <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Major Impact Softball League</h3>
+                    <p>Bringing competitive softball to communities across the region.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/MISL" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/MISL" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/MISL" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/MISL" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://tiktok.com/@MISL" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="fixtures.html">Fixtures</a></li>
+                        <li><a href="live-scores.html">Live Scores</a></li>
+                        <li><a href="standings.html">Standings</a></li>
+                        <li><a href="teams.html">Teams</a></li>
+                        <li><a href="stats.html">Statistics</a></li>
+                        <li><a href="news.html">News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Divisions</h3>
+                    <ul>
+                        <li><a href="standings.html?division=premier">Premier Softball League</a></li>
+                        <li><a href="standings.html?division=division1">Division 1 Softball</a></li>
+                        <li><a href="standings.html?division=division2">Division 2 Softball</a></li>
+                        <li><a href="standings.html?division=womens">Women's Softball League</a></li>
+                        <li><a href="standings.html?division=youth">Youth Softball League</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> info@misl.com</li>
+                        <li><i class="fas fa-phone"></i> +27 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Sports Avenue, Pretoria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Major Impact Softball League. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

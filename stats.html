@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISL - Statistics</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="index.html" class="logo">
+              <img src="images/MISL.png" alt="MISL Logo" class="logo-img" />
+              <span>MISL</span>
+            </a>
+          </div>
+          <button class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+          </button>
+          <ul class="nav-menu">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="live-scores.html">Scores</a></li>
+            <li><a href="standings.html">Standings</a></li>
+            <li><a href="stats.html">Stats</a></li>
+            <li><a href="downloads.html">Downloads</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="teams.html">Teams</a></li>
+            <li><a href="fixtures.html">Fixtures</a></li>
+            
+          </ul>
+          <button class="btn-live">
+            <span class="pulse"></span>
+            Live Games
+          </button>
+        </nav>
+      </header>
+      
+    <!-- Stats Content -->
+    <main class="stats-page">
+        <div class="container">
+            <!-- Stats Header with Search -->
+            <div class="stats-header">
+                <div class="stats-search">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search players, teams..." id="stats-search">
+                    </div>
+                    <div class="stats-filters">
+                        <select class="filter-select" id="season-filter">
+                            <option value="2023">2023 Season</option>
+                            <option value="2022">2022 Season</option>
+                            <option value="2021">2021 Season</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Navigation -->
+            <div class="stats-nav">
+                <button class="stat-tab active" data-type="overview">
+                    <i class="fas fa-chart-line"></i>
+                    Overview
+                </button>
+                <button class="stat-tab" data-type="batting">
+                    <i class="fas fa-baseball-bat-ball"></i>
+                    Batting
+                </button>
+                <button class="stat-tab" data-type="pitching">
+                    <i class="fas fa-baseball"></i>
+                    Pitching
+                </button>
+                <button class="stat-tab" data-type="fielding">
+                    <i class="fas fa-baseball-ball"></i>
+                    Fielding
+                </button>
+                <button class="stat-tab" data-type="team">
+                    <i class="fas fa-users"></i>
+                    Team
+                </button>
+            </div>
+
+            <!-- Stats Content -->
+            <div class="stats-content">
+                <!-- Stats Overview -->
+                <div class="stats-panel active" id="overview-panel">
+                    <div class="stat-highlights">
+                        <div class="highlight-card">
+                            <div class="highlight-header">
+                                <h3>Batting Average Leader</h3>
+                                <span class="trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    2.1%
+                                </span>
+                            </div>
+                            <div class="highlight-body">
+                                <div class="player-highlight">
+                                    <img src="images/players/player1.jpg" alt="John Smith">
+                                    <div class="player-details">
+                                        <h4>John Smith</h4>
+                                        <span class="team">Thunderbolts</span>
+                                        <div class="stat">.423</div>
+                                    </div>
+                                </div>
+                                <div class="stat-chart">
+                                    <!-- Chart will be added via JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight-card">
+                            <div class="highlight-header">
+                                <h3>ERA Leader</h3>
+                                <span class="trend negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    0.5%
+                                </span>
+                            </div>
+                            <div class="highlight-body">
+                                <div class="player-highlight">
+                                    <img src="images/players/player2.jpg" alt="Tom Brown">
+                                    <div class="player-details">
+                                        <h4>Tom Brown</h4>
+                                        <span class="team">Dragons</span>
+                                        <div class="stat">1.85</div>
+                                    </div>
+                                </div>
+                                <div class="stat-chart">
+                                    <!-- Chart will be added via JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-stats">
+                        <div class="quick-stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>League Leaders</h4>
+                                <div class="stat-grid">
+                                    <div class="stat-item">
+                                        <span class="label">Home Runs</span>
+                                        <span class="value">32</span>
+                                        <span class="player">Mike Johnson</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">RBIs</span>
+                                        <span class="value">94</span>
+                                        <span class="player">Mike Johnson</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Stolen Bases</span>
+                                        <span class="value">22</span>
+                                        <span class="player">David Wilson</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-table-section">
+                        <div class="table-header">
+                            <h3>Top Performers</h3>
+                            <div class="table-actions">
+                                <button class="btn-filter">
+                                    <i class="fas fa-filter"></i>
+                                    Filter
+                                </button>
+                                <button class="btn-download">
+                                    <i class="fas fa-download"></i>
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stats-table-wrapper">
+                            <table class="stats-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Player</th>
+                                        <th>Team</th>
+                                        <th>AVG</th>
+                                        <th>HR</th>
+                                        <th>RBI</th>
+                                        <th>R</th>
+                                        <th>SB</th>
+                                        <th>OBP</th>
+                                        <th>SLG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table content will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other stat panels will be shown/hidden via JavaScript -->
+                <div class="stats-panel" id="batting-panel">
+                    <!-- Batting stats content -->
+                </div>
+                <div class="stats-panel" id="pitching-panel">
+                    <!-- Pitching stats content -->
+                </div>
+                <div class="stats-panel" id="fielding-panel">
+                    <!-- Fielding stats content -->
+                </div>
+                <div class="stats-panel" id="team-panel">
+                    <!-- Team stats content -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Major Impact Softball League</h3>
+                    <p>Bringing competitive softball to communities across the region.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/MISL" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/MISL" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/MISL" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/MISL" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://tiktok.com/@MISL" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="fixtures.html">Fixtures</a></li>
+                        <li><a href="live-scores.html">Live Scores</a></li>
+                        <li><a href="standings.html">Standings</a></li>
+                        <li><a href="teams.html">Teams</a></li>
+                        <li><a href="stats.html">Statistics</a></li>
+                        <li><a href="news.html">News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Divisions</h3>
+                    <ul>
+                        <li><a href="standings.html?division=premier">Premier Softball League</a></li>
+                        <li><a href="standings.html?division=division1">Division 1 Softball</a></li>
+                        <li><a href="standings.html?division=division2">Division 2 Softball</a></li>
+                        <li><a href="standings.html?division=womens">Women's Softball League</a></li>
+                        <li><a href="standings.html?division=youth">Youth Softball League</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> info@misl.com</li>
+                        <li><i class="fas fa-phone"></i> +27 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Sports Avenue, Pretoria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Major Impact Softball League. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

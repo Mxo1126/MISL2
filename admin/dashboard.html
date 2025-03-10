@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISL Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"></script>
+    <!-- App Scripts -->
+    <script type="module" src="../../js/firebase-config.js"></script>
+    <script type="module" src="js/news.js"></script>
+    <script type="module" src="js/events.js"></script>
+    <script type="module" src="js/teams.js"></script>
+    <script type="module" src="js/scores.js"></script>
+    <script type="module" src="js/fixtures.js"></script>
+    <script type="module" src="js/players.js"></script>
+    <script src="js/validation.js"></script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay"></div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-futbol"></i> MISL Admin</h1>
+                <button class="mobile-menu-btn" onclick="toggleSidebar(false)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-section">Content</div>
+                <a href="#" class="nav-item active" data-section="news">
+                    <i class="fas fa-newspaper"></i>
+                    <span>News</span>
+                </a>
+                <a href="#" class="nav-item" data-section="events">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+                <div class="nav-section">Competition</div>
+                <a href="#" class="nav-item" data-section="scores">
+                    <i class="fas fa-trophy"></i>
+                    <span>Scores</span>
+                </a>
+                <a href="#" class="nav-item" data-section="teams">
+                    <i class="fas fa-users"></i>
+                    <span>Teams</span>
+                </a>
+                <a href="#" class="nav-item" data-section="players">
+                    <i class="fas fa-running"></i>
+                    <span>Players</span>
+                </a>
+                <a href="#" class="nav-item" data-section="fixtures">
+                    <i class="fas fa-calendar"></i>
+                    <span>Fixtures</span>
+                </a>
+                <div class="nav-section">System</div>
+                <a href="#" class="nav-item" onclick="signOut()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <button class="mobile-menu-btn" onclick="toggleSidebar(true)">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>MISL Admin</h1>
+            </header>
+
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section section" style="display: block;">
+                <div class="section-header">
+                    <h1>Dashboard Overview</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stats-number" id="newsCount">0</div>
+                            <div class="stats-label">News Articles</div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stats-number" id="eventsCount">0</div>
+                            <div class="stats-label">Events</div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stats-number" id="playersCount">0</div>
+                            <div class="stats-label">Players</div>
+                        </div>
+                        <div class="stat-change neutral">
+                            <i class="fas fa-minus"></i>
+                            <span>0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stats-number" id="scoresCount">0</div>
+                            <div class="stats-label">Match Scores</div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>15%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Recent News -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-newspaper"></i> Recent News</h3>
+                            <button class="btn btn-text" onclick="showSection('news')">View All</button>
+                        </div>
+                        <div class="recent-list" id="recentNews">
+                            <div class="placeholder-text">Loading recent news...</div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Events -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
+                            <button class="btn btn-text" onclick="showSection('events')">View All</button>
+                        </div>
+                        <div class="recent-list" id="upcomingEvents">
+                            <div class="placeholder-text">Loading events...</div>
+                        </div>
+                    </div>
+
+                    <!-- Latest Scores -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-trophy"></i> Latest Scores</h3>
+                            <button class="btn btn-text" onclick="showSection('scores')">View All</button>
+                        </div>
+                        <div class="recent-list" id="latestScores">
+                            <div class="placeholder-text">Loading scores...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- News Section -->
+            <section id="newsSection" class="content-section section">
+                <div class="section-header">
+                    <h1>News Management</h1>
+                    <button class="add-btn" onclick="openModal('addNewsModal')">
+                        <i class="fas fa-plus"></i> Add News
+                    </button>
+                </div>
+                <div class="grid-container" id="newsGrid"></div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="eventsSection" class="content-section section">
+                <div class="section-header">
+                    <h1>Events Management</h1>
+                    <button class="add-btn" onclick="openModal('addEventModal')">
+                        <i class="fas fa-plus"></i> Add Event
+                    </button>
+                </div>
+                <div class="grid-container" id="eventsGrid"></div>
+            </section>
+
+            <!-- Teams Section -->
+            <section id="teamsSection" class="content-section section">
+                <div class="section-header">
+                    <h1>Teams Management</h1>
+                    <button class="add-btn" onclick="openModal('manageTeamsModal')">
+                        <i class="fas fa-plus"></i> Manage Teams
+                    </button>
+                </div>
+                <div class="grid-container" id="teamsGrid"></div>
+            </section>
+
+            <!-- Players Section -->
+            <section id="playersSection" class="content-section section">
+                <div class="section-header">
+                    <h1>Players Management</h1>
+                    <button class="add-btn" onclick="openModal('addPlayerModal')">
+                        <i class="fas fa-plus"></i> Add Player
+                    </button>
+                </div>
+                <div class="grid-container" id="playersGrid"></div>
+            </section>
+
+            <!-- Scores Section -->
+            <section id="scoresSection" class="content-section section">
+                <div class="section-header">
+                    <h1>Scores Management</h1>
+                    <button class="add-btn" onclick="openModal('addScoreModal')">
+                        <i class="fas fa-plus"></i> Add Score
+                    </button>
+                </div>
+                <div class="grid-container" id="scoresGrid"></div>
+            </section>
+
+            <!-- Fixtures Section -->
+            <section id="fixturesSection" class="content-section section">
+                <div class="section-header">
+                    <h1>Fixtures Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" onclick="openModal('manageTeamsModal')">
+                            <i class="fas fa-users"></i> Manage Teams
+                        </button>
+                        <button class="btn btn-primary" onclick="openModal('addFixtureModal')">
+                            <i class="fas fa-plus"></i> Add Fixture
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content" id="fixtures-page">
+                    <div class="content-header">
+                        <h2><i class="fas fa-calendar"></i> Fixture Management</h2>
+                        <button class="btn btn-primary" onclick="openModal('addFixtureModal')">
+                            <i class="fas fa-plus"></i> Add New Fixture
+                        </button>
+                    </div>
+
+                    <!-- Fixture Filters -->
+                    <div class="filter-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="fixtureSearch" placeholder="Search fixtures...">
+                        </div>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">All Matches</button>
+                            <button class="filter-btn" data-filter="today">Today</button>
+                            <button class="filter-btn" data-filter="week">This Week</button>
+                            <button class="filter-btn" data-filter="month">This Month</button>
+                        </div>
+                    </div>
+
+                    <!-- Fixtures List -->
+                    <div class="fixtures-container">
+                        <!-- Today's Matches -->
+                        <div class="fixture-group">
+                            <h3>Today's Matches</h3>
+                            <div class="fixture-cards">
+                                <div class="fixture-card">
+                                    <div class="fixture-header">
+                                        <span class="fixture-date">17 FEB 2025</span>
+                                        <span class="fixture-time">14:00</span>
+                                        <span class="fixture-venue">Field 1</span>
+                                    </div>
+                                    <div class="fixture-teams">
+                                        <div class="team home">
+                                            <img src="../images/chicago maniacs.png" alt="Chicago Maniacs">
+                                            <span>Chicago Maniacs</span>
+                                        </div>
+                                        <div class="vs">VS</div>
+                                        <div class="team away">
+                                            <img src="../images/Firestorm.png" alt="Firestorm">
+                                            <span>Firestorm</span>
+                                        </div>
+                                    </div>
+                                    <div class="fixture-details">
+                                        <span class="ticket-status available">Tickets Available</span>
+                                        <span class="reminder-count"><i class="far fa-bell"></i> 156 Reminders</span>
+                                    </div>
+                                    <div class="fixture-actions">
+                                        <button class="btn btn-edit" onclick="window.fixtureModule.editFixture('fixture1')">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-delete" onclick="window.fixtureModule.deleteFixture('fixture1')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Matches -->
+                        <div class="fixture-group">
+                            <h3>Upcoming Matches</h3>
+                            <div class="fixture-cards">
+                                <div class="fixture-card">
+                                    <div class="fixture-header">
+                                        <span class="fixture-date">20 FEB 2025</span>
+                                        <span class="fixture-time">15:00</span>
+                                        <span class="fixture-venue">Field 1</span>
+                                    </div>
+                                    <div class="fixture-teams">
+                                        <div class="team home">
+                                            <img src="../images/Firestorm.png" alt="Firestorm">
+                                            <span>Firestorm</span>
+                                        </div>
+                                        <div class="vs">VS</div>
+                                        <div class="team away">
+                                            <img src="../images/Lakeshore.png" alt="Lakeshore">
+                                            <span>Lakeshore</span>
+                                        </div>
+                                    </div>
+                                    <div class="fixture-details">
+                                        <span class="ticket-status limited">Limited Tickets</span>
+                                        <span class="reminder-count"><i class="far fa-bell"></i> 89 Reminders</span>
+                                    </div>
+                                    <div class="fixture-actions">
+                                        <button class="btn btn-edit" onclick="window.fixtureModule.editFixture('fixture2')">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-delete" onclick="window.fixtureModule.deleteFixture('fixture2')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- News Modal -->
+    <div id="addNewsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-newspaper"></i> Add News</h2>
+                <button class="close-btn" onclick="closeModal('addNewsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="newsForm" onsubmit="handleNewsSubmit(event)">
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Article Information</h3>
+                        <div class="form-group">
+                            <label for="newsTitle">Title *</label>
+                            <input type="text" id="newsTitle" class="form-control" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="newsCategory">Category *</label>
+                                <select id="newsCategory" class="form-control" required>
+                                    <option value="">Select category</option>
+                                    <option value="league">League Updates</option>
+                                    <option value="teams">Team News</option>
+                                    <option value="players">Player Spotlight</option>
+                                    <option value="community">Community</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="newsAuthor">Author *</label>
+                                <input type="text" id="newsAuthor" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newsExcerpt">Article Excerpt *</label>
+                            <textarea id="newsExcerpt" class="form-control" rows="2" required 
+                                placeholder="Brief summary (shown in news cards)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newsContent">Full Content *</label>
+                            <textarea id="newsContent" class="form-control rich-editor" rows="6" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Media -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Featured Image</h3>
+                        <div class="form-group">
+                            <label for="newsImage">Article Image *</label>
+                            <input type="file" id="newsImage" class="form-control" accept="image/*" required>
+                            <small class="form-text">Recommended: 16:9 ratio, min 800x450px</small>
+                        </div>
+                        <div id="imagePreview" class="image-preview"></div>
+                    </div>
+
+                    <!-- Publishing Options -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Publishing Options</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="newsDate">Publish Date *</label>
+                                <input type="datetime-local" id="newsDate" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="newsStatus">Status *</label>
+                                <select id="newsStatus" class="form-control" required>
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                    <option value="scheduled">Scheduled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="newsFeatured"> Feature this article
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="newsNotification"> Send notification to app users
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text" onclick="closeModal('addNewsModal')">Cancel</button>
+                <button type="submit" form="newsForm" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Article
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events/Fixtures Modal -->
+    <div id="addEventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar"></i> Add Event</h2>
+                <button class="close-btn" onclick="closeModal('addEventModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm" onsubmit="handleEventSubmit(event)">
+                    <!-- Match Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Match Information</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="homeTeam">Home Team *</label>
+                                <select id="homeTeam" class="form-control" required>
+                                    <option value="">Select home team</option>
+                                    <option value="chicago-maniacs">Chicago Maniacs</option>
+                                    <option value="firestorm">Firestorm</option>
+                                    <option value="fatman">Fatman</option>
+                                    <option value="lakeshore">Lakeshore</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="awayTeam">Away Team *</label>
+                                <select id="awayTeam" class="form-control" required>
+                                    <option value="">Select away team</option>
+                                    <option value="chicago-maniacs">Chicago Maniacs</option>
+                                    <option value="firestorm">Firestorm</option>
+                                    <option value="fatman">Fatman</option>
+                                    <option value="lakeshore">Lakeshore</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date and Venue -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Date and Venue</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="eventDate">Date *</label>
+                                <input type="date" id="eventDate" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="eventTime">Time *</label>
+                                <input type="time" id="eventTime" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="venue">Venue *</label>
+                                <select id="venue" class="form-control" required>
+                                    <option value="">Select venue</option>
+                                    <option value="field1">Field 1</option>
+                                    <option value="field2">Field 2</option>
+                                    <option value="field3">Field 3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Ticket Information</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ticketPrice">Ticket Price ($) *</label>
+                                <input type="number" id="ticketPrice" class="form-control" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ticketsAvailable">Available Tickets *</label>
+                                <input type="number" id="ticketsAvailable" class="form-control" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="ticketSalesEnabled"> Enable ticket sales
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Additional Information</h3>
+                        <div class="form-group">
+                            <label for="eventNotes">Match Notes</label>
+                            <textarea id="eventNotes" class="form-control" rows="3" 
+                                placeholder="Any special notes about the match (optional)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="featuredMatch"> Feature this match
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="broadcastMatch"> Live broadcast available
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text" onclick="closeModal('addEventModal')">Cancel</button>
+                <button type="submit" form="eventForm" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Event
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teams Modal -->
+    <div id="manageTeamsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-users"></i> Manage Teams</h2>
+                <button class="close-btn" onclick="closeModal('manageTeamsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="action-bar">
+                    <button class="btn btn-primary" onclick="openModal('addTeamModal')">
+                        <i class="fas fa-plus"></i> Add New Team
+                    </button>
+                </div>
+                <div class="teams-list">
+                    <!-- Loading State -->
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Quick Add Modal -->
+    <div id="addTeamModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-users"></i> Add Team</h2>
+                <button class="close-btn" onclick="closeModal('addTeamModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="quickTeamForm">
+                    <div class="form-group">
+                        <label for="teamName">Team Name *</label>
+                        <input type="text" id="teamName" name="teamName" class="form-control" required 
+                               minlength="2" maxlength="50" pattern="[A-Za-z0-9\s-]+"
+                               title="Team name can only contain letters, numbers, spaces, and hyphens">
+                        <div class="validation-message">Please enter a valid team name (2-50 characters, letters, numbers, spaces, and hyphens only)</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teamCode">Team Code *</label>
+                        <input type="text" id="teamCode" name="teamCode" class="form-control" required
+                               minlength="2" maxlength="20" pattern="[a-z0-9-]+" 
+                               title="Only lowercase letters, numbers, and hyphens allowed">
+                        <div class="validation-message">Please enter a valid team code (2-20 characters, lowercase letters, numbers, and hyphens only)</div>
+                        <small class="form-text text-muted">This will be used as the team's unique identifier. Use lowercase letters, numbers, and hyphens only.</small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-text" onclick="closeModal('addTeamModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Add Team
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Players Modal -->
+    <div id="addPlayerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-running"></i> Add Player</h2>
+                <button class="close-btn" onclick="closeModal('addPlayerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="playerForm" onsubmit="handlePlayerSubmit(event)">
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Basic Information</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="playerFirstName">First Name *</label>
+                                <input type="text" id="playerFirstName" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="playerLastName">Last Name *</label>
+                                <input type="text" id="playerLastName" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="playerTeam">Team *</label>
+                                <select id="playerTeam" class="form-control" required>
+                                    <option value="">Select team</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="playerNumber">Jersey Number *</label>
+                                <input type="number" id="playerNumber" class="form-control" required min="0" max="99">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="playerPhoto">Player Photo</label>
+                            <input type="file" id="playerPhoto" class="form-control" accept="image/*">
+                            <small class="form-text">Recommended: Portrait photo, min 400x600px</small>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Season Statistics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="playerBattingAvg">Batting Average</label>
+                                <input type="number" id="playerBattingAvg" class="form-control" 
+                                    step="0.001" min="0" max="1">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="playerHits">Hits</label>
+                                <input type="number" id="playerHits" class="form-control" min="0">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="playerRBI">RBIs</label>
+                                <input type="number" id="playerRBI" class="form-control" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Additional Information</h3>
+                        <div class="form-group">
+                            <label for="playerBio">Player Biography</label>
+                            <textarea id="playerBio" class="form-control" rows="4" 
+                                placeholder="Brief player history and achievements"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="playerFeatured"> Feature this player
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text" onclick="closeModal('addPlayerModal')">Cancel</button>
+                <button type="submit" form="playerForm" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Player
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Modal -->
+    <div id="addScoreModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-trophy"></i> Add Match Score</h2>
+                <button class="close-btn" onclick="closeModal('addScoreModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="scoreForm" onsubmit="handleScoreSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="scoreHomeTeam">Home Team *</label>
+                            <select id="scoreHomeTeam" class="form-control" required>
+                                <option value="">Select home team</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="scoreAwayTeam">Away Team *</label>
+                            <select id="scoreAwayTeam" class="form-control" required>
+                                <option value="">Select away team</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="scoreHomeScore">Home Score *</label>
+                            <input type="number" id="scoreHomeScore" class="form-control" required min="0">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="scoreAwayScore">Away Score *</label>
+                            <input type="number" id="scoreAwayScore" class="form-control" required min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="scoreDate">Match Date *</label>
+                            <input type="date" id="scoreDate" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="scoreTime">Match Time *</label>
+                            <input type="time" id="scoreTime" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scoreVenue">Venue *</label>
+                        <input type="text" id="scoreVenue" class="form-control" required 
+                            placeholder="Enter match venue">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scoreCompetition">Competition *</label>
+                        <select id="scoreCompetition" class="form-control" required>
+                            <option value="">Select competition</option>
+                            <option value="league">League Match</option>
+                            <option value="cup">Cup Match</option>
+                            <option value="friendly">Friendly Match</option>
+                            <option value="playoff">Playoff Match</option>
+                            <option value="tournament">Tournament Match</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scoreRound">Round/Stage</label>
+                        <input type="text" id="scoreRound" class="form-control" 
+                            placeholder="e.g., Quarter Final, Week 5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scoreStatus">Match Status *</label>
+                        <select id="scoreStatus" class="form-control" required>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="postponed">Postponed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scoreHighlights">Match Highlights</label>
+                        <textarea id="scoreHighlights" class="form-control" rows="4" 
+                            placeholder="Enter key match events and highlights"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Statistics</label>
+                        <div class="stats-grid">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="statsPossessionHome">Possession % (Home)</label>
+                                    <input type="number" id="statsPossessionHome" class="form-control" min="0" max="100">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="statsPossessionAway">Possession % (Away)</label>
+                                    <input type="number" id="statsPossessionAway" class="form-control" min="0" max="100">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="statsShotsHome">Shots (Home)</label>
+                                    <input type="number" id="statsShotsHome" class="form-control" min="0">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="statsShotsAway">Shots (Away)</label>
+                                    <input type="number" id="statsShotsAway" class="form-control" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="scoreNotification"> Send notification to app users
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="scoreHighlight"> Highlight this match
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text" onclick="closeModal('addScoreModal')">Cancel</button>
+                <button type="submit" form="scoreForm" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Score
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixtures Modal -->
+    <div id="addFixtureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-plus"></i> Add New Fixture</h2>
+                <button class="close-btn" onclick="closeModal('addFixtureModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="fixtureForm">
+                    <!-- Match Details -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Match Details</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="homeTeam">Home Team *</label>
+                                <div class="input-group">
+                                    <select id="homeTeam" name="homeTeam" class="form-control" required>
+                                        <option value="">Select home team</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" onclick="openModal('addTeamModal', 'home')">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="awayTeam">Away Team *</label>
+                                <div class="input-group">
+                                    <select id="awayTeam" name="awayTeam" class="form-control" required>
+                                        <option value="">Select away team</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" onclick="openModal('addTeamModal', 'away')">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date and Venue -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Date and Venue</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="matchDate">Match Date *</label>
+                                <input type="date" id="matchDate" name="matchDate" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="matchTime">Match Time *</label>
+                                <input type="time" id="matchTime" name="matchTime" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="venue">Venue *</label>
+                                <select id="venue" name="venue" class="form-control" required>
+                                    <option value="">Select venue</option>
+                                    <option value="field-1">Field 1</option>
+                                    <option value="field-2">Field 2</option>
+                                    <option value="field-3">Field 3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Ticket Information</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ticketPrice">Ticket Price ($) *</label>
+                                <input type="number" id="ticketPrice" name="ticketPrice" class="form-control" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ticketQuantity">Available Tickets *</label>
+                                <input type="number" id="ticketQuantity" name="ticketQuantity" class="form-control" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="ticketSaleStart">Ticket Sale Start Date *</label>
+                                <input type="datetime-local" id="ticketSaleStart" name="ticketSaleStart" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Additional Information</h3>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="matchNotes">Match Notes</label>
+                                <textarea id="matchNotes" name="matchNotes" class="form-control" rows="3" placeholder="Enter any additional information about the match..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-text" onclick="closeModal('addFixtureModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Fixture
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Standings Modal -->
+    <div id="updateStandingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-trophy"></i> Update Standings</h2>
+                <button class="close-btn" onclick="closeModal('updateStandingsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="standingsForm" onsubmit="handleStandingsSubmit(event)">
+                    <!-- Team Selection -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Team Selection</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="standingsTeam">Team *</label>
+                                <select id="standingsTeam" class="form-control" required>
+                                    <option value="">Select team</option>
+                                    <option value="thunder-bay">Thunder Bay</option>
+                                    <option value="duluth">Duluth</option>
+                                    <option value="green-bay">Green Bay</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="standingsDivision">Division *</label>
+                                <select id="standingsDivision" class="form-control" required>
+                                    <option value="">Select division</option>
+                                    <option value="east">Eastern Division</option>
+                                    <option value="west">Western Division</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Statistics -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Game Statistics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="gamesPlayed">Games Played *</label>
+                                <input type="number" id="gamesPlayed" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="wins">Wins *</label>
+                                <input type="number" id="wins" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="losses">Losses *</label>
+                                <input type="number" id="losses" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="winPercentage">Win PCT</label>
+                                <input type="text" id="winPercentage" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Performance Metrics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="lastTen">Last 10 Games *</label>
+                                <input type="text" id="lastTen" class="form-control" 
+                                    placeholder="Format: 7-3" pattern="[0-9]-[0-9]" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="streak">Current Streak *</label>
+                                <div class="input-group">
+                                    <select id="streakType" class="form-control" required>
+                                        <option value="W">W</option>
+                                        <option value="L">L</option>
+                                    </select>
+                                    <input type="number" id="streakCount" class="form-control" min="0" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="gamesBehind">Games Behind</label>
+                                <input type="number" id="gamesBehind" class="form-control" min="0" step="0.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Run Statistics -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Run Statistics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="runsScored">Runs Scored *</label>
+                                <input type="number" id="runsScored" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="runsAgainst">Runs Against *</label>
+                                <input type="number" id="runsAgainst" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="runDifferential">Run Differential</label>
+                                <input type="text" id="runDifferential" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Position Status -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Position Status</h3>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="divisionLeader"> Division Leader
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="wildcardPosition"> Wild Card Position
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text" onclick="closeModal('updateStandingsModal')">Cancel</button>
+                <button type="submit" form="standingsForm" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Standings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="updateStatsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-chart-line"></i> Update Player Stats</h2>
+                <button class="close-btn" onclick="closeModal('updateStatsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="statsForm" onsubmit="handleStatsSubmit(event)">
+                    <!-- Player Selection -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Player Selection</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="statsPlayer">Player *</label>
+                                <select id="statsPlayer" class="form-control" required>
+                                    <option value="">Select player</option>
+                                    <option value="john-smith">John Smith</option>
+                                    <option value="tom-brown">Tom Brown</option>
+                                    <option value="mike-johnson">Mike Johnson</option>
+                                    <option value="david-wilson">David Wilson</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="statsTeam">Team *</label>
+                                <select id="statsTeam" class="form-control" required>
+                                    <option value="">Select team</option>
+                                    <option value="thunderbolts">Thunderbolts</option>
+                                    <option value="dragons">Dragons</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Batting Stats -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Batting Statistics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="atBats">At Bats *</label>
+                                <input type="number" id="atBats" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="hits">Hits *</label>
+                                <input type="number" id="hits" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="battingAverage">AVG</label>
+                                <input type="text" id="battingAverage" class="form-control" readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="slugging">SLG</label>
+                                <input type="text" id="slugging" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="homeRuns">Home Runs *</label>
+                                <input type="number" id="homeRuns" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="rbis">RBIs *</label>
+                                <input type="number" id="rbis" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="runs">Runs *</label>
+                                <input type="number" id="runs" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="stolenBases">Stolen Bases *</label>
+                                <input type="number" id="stolenBases" class="form-control" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="walks">Walks *</label>
+                                <input type="number" id="walks" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="strikeouts">Strikeouts *</label>
+                                <input type="number" id="strikeouts" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="obp">OBP</label>
+                                <input type="text" id="obp" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pitching Stats -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Pitching Statistics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="inningsPitched">Innings Pitched</label>
+                                <input type="number" id="inningsPitched" class="form-control" min="0" step="0.1">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="earnedRuns">Earned Runs</label>
+                                <input type="number" id="earnedRuns" class="form-control" min="0">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="era">ERA</label>
+                                <input type="text" id="era" class="form-control" readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="whip">WHIP</label>
+                                <input type="text" id="whip" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fielding Stats -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Fielding Statistics</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="putouts">Putouts</label>
+                                <input type="number" id="putouts" class="form-control" min="0">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="assists">Assists</label>
+                                <input type="number" id="assists" class="form-control" min="0">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="errors">Errors</label>
+                                <input type="number" id="errors" class="form-control" min="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="fieldingPercentage">Fielding %</label>
+                                <input type="text" id="fieldingPercentage" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-text" onclick="closeModal('updateStatsModal')">Cancel</button>
+                <button type="submit" form="statsForm" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Stats
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize sections
+        const sections = ['dashboard', 'news', 'events', 'teams', 'scores', 'players', 'fixtures'];
+        let currentSection = 'dashboard';
+
+        // Show section
+        window.showSection = (sectionName) => {
+            // Hide all sections
+            sections.forEach(section => {
+                const element = document.getElementById(section + 'Section') || document.getElementById(section);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById(sectionName + 'Section') || document.getElementById(sectionName);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionName) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update current section
+            currentSection = sectionName;
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                toggleSidebar(false);
+            }
+        };
+
+        // Toggle sidebar
+        window.toggleSidebar = (show) => {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            if (show) {
+                sidebar.classList.add('show');
+                overlay.style.display = 'block';
+            } else {
+                sidebar.classList.remove('show');
+                overlay.style.display = 'none';
+            }
+        };
+
+        // Close sidebar when clicking overlay
+        document.querySelector('.sidebar-overlay').addEventListener('click', () => {
+            toggleSidebar(false);
+        });
+
+        // Add click handlers to nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if (item.dataset.section) {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection(item.dataset.section);
+                });
+            }
+        });
+
+        // Show notification helper
+        window.showNotification = (message, type = 'info') => {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        };
+
+        // Modal helpers
+        window.openModal = (modalId, teamType) => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                if (teamType) {
+                    const teamSelect = document.getElementById(teamType + 'Team');
+                    if (teamSelect) {
+                        teamSelect.focus();
+                    }
+                }
+            }
+        };
+
+        window.closeModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                closeModal(e.target.id);
+            }
+        });
+
+        // Sign out handler
+        window.signOut = async () => {
+            try {
+                const { firebase } = await import('../../js/firebase-config.js');
+                await firebase.auth().signOut();
+                window.location.href = '../index.html';
+            } catch (error) {
+                console.error('Error signing out:', error);
+                showNotification('Error signing out', 'error');
+            }
+        };
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show dashboard by default
+            showSection('dashboard');
+            
+            // Handle mobile menu
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    toggleSidebar(true);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Major Impact Softball League Teams - View team profiles, stats, and rosters" />
+    <title>MISL Teams</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <script type="module" src="/dist/main.js" defer></script>
+</head>
+<body>
+    <!-- Social Media Bar -->
+    <aside class="social-bar" aria-label="Social Media Links">
+        <a href="https://facebook.com/MISL" class="social-link facebook" aria-label="Follow us on Facebook">
+            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+            <span class="tooltip">Follow on Facebook</span>
+        </a>
+        <a href="https://twitter.com/MISL" class="social-link twitter" aria-label="Follow us on Twitter">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+            <span class="tooltip">Follow on Twitter</span>
+        </a>
+        <a href="https://instagram.com/MISL" class="social-link instagram" aria-label="Follow us on Instagram">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
+            <span class="tooltip">Follow on Instagram</span>
+        </a>
+        <a href="https://youtube.com/MISL" class="social-link youtube" aria-label="Subscribe to our YouTube channel">
+            <i class="fab fa-youtube" aria-hidden="true"></i>
+            <span class="tooltip">Subscribe on YouTube</span>
+        </a>
+        <a href="https://tiktok.com/@MISL" class="social-link tiktok" aria-label="Follow us on TikTok">
+            <i class="fab fa-tiktok" aria-hidden="true"></i>
+            <span class="tooltip">Follow on TikTok</span>
+        </a>
+    </aside>
+
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="index.html" class="logo">
+              <img src="images/MISL.png" alt="MISL Logo" class="logo-img" />
+              <span>MISL</span>
+            </a>
+          </div>
+          <button class="menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+          </button>
+          <ul class="nav-menu">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="live-scores.html">Scores</a></li>
+            <li><a href="standings.html">Standings</a></li>
+            <li><a href="stats.html">Stats</a></li>
+            <li><a href="downloads.html">Downloads</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="teams.html">Teams</a></li>
+            <li><a href="fixtures.html">Fixtures</a></li>
+            
+          </ul>
+          <button class="btn-live">
+            <span class="pulse"></span>
+            Live Games
+          </button>
+        </nav>
+      </header>
+
+    <main class="teams-page">
+        <!-- Teams Header -->
+        <section class="page-header" aria-labelledby="teams-heading">
+            <div class="container">
+                <h1 id="teams-heading">Our Teams</h1>
+                <p>Meet the competitive teams in the Major Impact Softball League</p>
+                <div class="teams-filters">
+                    <button class="filter-btn active" data-filter="all">All Divisions</button>
+                    <button class="filter-btn" data-filter="north">North</button>
+                    <button class="filter-btn" data-filter="south">South</button>
+                    <button class="filter-btn" data-filter="east">East</button>
+                    <button class="filter-btn" data-filter="west">West</button>
+                </div>
+                <div class="search-container">
+                    <input type="search" class="search-input" placeholder="Search teams..." aria-label="Search teams">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teams Grid -->
+        <section class="teams-section" aria-label="Teams list">
+            <div class="container">
+                <div class="teams-grid">
+                    <!-- Chicago Maniacs -->
+                    <article class="team-card" data-team="chicago-maniacs" data-division="north">
+                        <div class="team-header">
+                            <div class="team-logo">
+                                <img src="images/chicago maniacs.png" alt="Chicago Maniacs Logo" width="120" height="120" loading="lazy">
+                            </div>
+                            <div class="team-badges">
+                                <span class="badge champion" title="League Champions 2024">🏆</span>
+                                <span class="badge streak">W3</span>
+                            </div>
+                            <h3>Chicago Maniacs</h3>
+                            <p class="team-location">North Division</p>
+                        </div>
+                        <div class="team-info">
+                            <div class="team-stats">
+                                <div class="stat">
+                                    <span class="stat-value">18</span>
+                                    <span class="stat-label">Wins</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">6</span>
+                                    <span class="stat-label">Losses</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">.750</span>
+                                    <span class="stat-label">PCT</span>
+                                </div>
+                            </div>
+                            <div class="team-details">
+                                <p class="team-description">
+                                    The Chicago Maniacs bring their signature intensity and skill to every game, making them one of the most feared teams in the league.
+                                </p>
+                                <div class="team-highlights">
+                                    <div class="highlight">
+                                        <i class="fas fa-trophy" aria-hidden="true"></i>
+                                        <span>2024 League Champions</span>
+                                    </div>
+                                    <div class="highlight">
+                                        <i class="fas fa-fire" aria-hidden="true"></i>
+                                        <span>Current Win Streak: 3</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-actions">
+                                <button class="btn-primary" onclick="window.location.href='team-details.html?team=chicago-maniacs'">
+                                    View Team
+                                </button>
+                                <button class="btn-secondary favorite-btn" aria-label="Set as favorite team">
+                                    <i class="far fa-star" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Fatman -->
+                    <article class="team-card" data-team="fatman" data-division="west">
+                        <div class="team-header">
+                            <div class="team-logo">
+                                <img src="images/fatman.png" alt="Fatman Logo" width="120" height="120" loading="lazy">
+                            </div>
+                            <div class="team-badges">
+                                <span class="badge streak">W2</span>
+                            </div>
+                            <h3>Fatman</h3>
+                            <p class="team-location">West Division</p>
+                        </div>
+                        <div class="team-info">
+                            <div class="team-stats">
+                                <div class="stat">
+                                    <span class="stat-value">16</span>
+                                    <span class="stat-label">Wins</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">8</span>
+                                    <span class="stat-label">Losses</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">.667</span>
+                                    <span class="stat-label">PCT</span>
+                                </div>
+                            </div>
+                            <div class="team-details">
+                                <p class="team-description">
+                                    Known for their powerful hitting and strategic gameplay, Fatman has established themselves as a formidable force in the league.
+                                </p>
+                                <div class="team-highlights">
+                                    <div class="highlight">
+                                        <i class="fas fa-chart-line" aria-hidden="true"></i>
+                                        <span>Top Batting Average</span>
+                                    </div>
+                                    <div class="highlight">
+                                        <i class="fas fa-fire" aria-hidden="true"></i>
+                                        <span>Current Win Streak: 2</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-actions">
+                                <button class="btn-primary" onclick="window.location.href='team-details.html?team=fatman'">
+                                    View Team
+                                </button>
+                                <button class="btn-secondary favorite-btn" aria-label="Set as favorite team">
+                                    <i class="far fa-star" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Firestorm -->
+                    <article class="team-card" data-team="firestorm" data-division="south">
+                        <div class="team-header">
+                            <div class="team-logo">
+                                <img src="images/Firestorm.png" alt="Firestorm Logo" width="120" height="120" loading="lazy">
+                            </div>
+                            <div class="team-badges">
+                                <span class="badge streak">W1</span>
+                            </div>
+                            <h3>Firestorm</h3>
+                            <p class="team-location">South Division</p>
+                        </div>
+                        <div class="team-info">
+                            <div class="team-stats">
+                                <div class="stat">
+                                    <span class="stat-value">17</span>
+                                    <span class="stat-label">Wins</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">7</span>
+                                    <span class="stat-label">Losses</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">.708</span>
+                                    <span class="stat-label">PCT</span>
+                                </div>
+                            </div>
+                            <div class="team-details">
+                                <p class="team-description">
+                                    With blazing speed and explosive offense, Firestorm lives up to their name as one of the most dynamic teams in the league.
+                                </p>
+                                <div class="team-highlights">
+                                    <div class="highlight">
+                                        <i class="fas fa-fire" aria-hidden="true"></i>
+                                        <span>Current Win Streak: 1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-actions">
+                                <button class="btn-primary" onclick="window.location.href='team-details.html?team=firestorm'">
+                                    View Team
+                                </button>
+                                <button class="btn-secondary favorite-btn" aria-label="Set as favorite team">
+                                    <i class="far fa-star" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Lakeshore -->
+                    <article class="team-card" data-team="lakeshore" data-division="east">
+                        <div class="team-header">
+                            <div class="team-logo">
+                                <img src="images/Lakeshore.png" alt="Lakeshore Logo" width="120" height="120" loading="lazy">
+                            </div>
+                            <div class="team-badges">
+                                <span class="badge streak">L1</span>
+                            </div>
+                            <h3>Lakeshore</h3>
+                            <p class="team-location">East Division</p>
+                        </div>
+                        <div class="team-info">
+                            <div class="team-stats">
+                                <div class="stat">
+                                    <span class="stat-value">15</span>
+                                    <span class="stat-label">Wins</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">9</span>
+                                    <span class="stat-label">Losses</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">.625</span>
+                                    <span class="stat-label">PCT</span>
+                                </div>
+                            </div>
+                            <div class="team-details">
+                                <p class="team-description">
+                                    Playing with precision and teamwork, Lakeshore has built a reputation for their consistent performance and strategic excellence.
+                                </p>
+                                <div class="team-highlights">
+                                    <div class="highlight">
+                                        <i class="fas fa-chart-line" aria-hidden="true"></i>
+                                        <span>Top ERA</span>
+                                    </div>
+                                    <div class="highlight">
+                                        <i class="fas fa-fire" aria-hidden="true"></i>
+                                        <span>Current Loss Streak: 1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-actions">
+                                <button class="btn-primary" onclick="window.location.href='team-details.html?team=lakeshore'">
+                                    View Team
+                                </button>
+                                <button class="btn-secondary favorite-btn" aria-label="Set as favorite team">
+                                    <i class="far fa-star" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Statistics Overview -->
+        <section class="team-stats-overview" aria-labelledby="stats-heading">
+            <div class="container">
+                <h2 id="stats-heading">League Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Batting Leaders</h3>
+                        <div class="stat-list">
+                            <div class="stat-item">
+                                <span class="team">Chicago Maniacs</span>
+                                <span class="value">.342</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="team">Fatman</span>
+                                <span class="value">.335</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="team">Firestorm</span>
+                                <span class="value">.329</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Home Runs</h3>
+                        <div class="stat-list">
+                            <div class="stat-item">
+                                <span class="team">Fatman</span>
+                                <span class="value">45</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="team">Firestorm</span>
+                                <span class="value">42</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="team">Chicago Maniacs</span>
+                                <span class="value">38</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>ERA Leaders</h3>
+                        <div class="stat-list">
+                            <div class="stat-item">
+                                <span class="team">Lakeshore</span>
+                                <span class="value">2.45</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="team">Chicago Maniacs</span>
+                                <span class="value">2.68</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="team">Firestorm</span>
+                                <span class="value">2.89</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Major Impact Softball League</h3>
+                    <p>Bringing competitive softball to communities across the region.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/MISL" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/MISL" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/MISL" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/MISL" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://tiktok.com/@MISL" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="fixtures.html">Fixtures</a></li>
+                        <li><a href="live-scores.html">Live Scores</a></li>
+                        <li><a href="standings.html">Standings</a></li>
+                        <li><a href="teams.html">Teams</a></li>
+                        <li><a href="stats.html">Statistics</a></li>
+                        <li><a href="news.html">News</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Divisions</h3>
+                    <ul>
+                        <li><a href="standings.html?division=premier">Premier Softball League</a></li>
+                        <li><a href="standings.html?division=division1">Division 1 Softball</a></li>
+                        <li><a href="standings.html?division=division2">Division 2 Softball</a></li>
+                        <li><a href="standings.html?division=womens">Women's Softball League</a></li>
+                        <li><a href="standings.html?division=youth">Youth Softball League</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> info@misl.com</li>
+                        <li><i class="fas fa-phone"></i> +27 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Sports Avenue, Pretoria</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Major Impact Softball League. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
